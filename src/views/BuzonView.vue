@@ -6,7 +6,12 @@ import CardBuzon from '../components/CardBuzon.vue'
   <div class="container">
     <div class="container section-title" data-aos="fade-up">
       <h2 class="text-center mt-3 mb-3">
-        <i class="bi bi-envelope-paper-heart-fill"></i> Buzón de Cartas
+        <span class="d-none d-lg-inline"
+          ><i class="bi bi-envelope-paper-heart-fill"></i> Buzón de Cartas</span
+        >
+        <span class="d-lg-none"
+          ><i class="bi bi-envelope-paper-heart-fill"></i> Buzón</span
+        >
       </h2>
     </div>
     <section class="row justify-content-center">
