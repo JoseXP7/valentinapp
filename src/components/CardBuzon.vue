@@ -6,13 +6,21 @@ const { supabase } = useSupabase()
 const cartas = ref([])
 const searchName = ref('')
 let loading = true
+let isHovered = ref(false)
+
+const oneCarta = ref([])
 
 async function getCartas() {
   const { data } = await supabase
     .from('cartas')
     .select()
     .order('id', { ascending: false })
-  cartas.value = data
+  cartas.value = data.map((carta) => ({ ...carta, isHovered: false }))
+}
+
+async function getOneCarta(id) {
+  const { data } = await supabase.from('cartas').select().eq('id', id)
+  oneCarta.value = data
 }
 
 async function searchCarta() {
@@ -76,14 +84,86 @@ onMounted(() => {
   >
     <div class="card border-primary mb-5 shadow">
       <div class="card-body">
-        <h5 class="card-title">{{ carta.nombre }} {{ carta.apellido }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ carta.decanato }}</h6>
-        <p class="card-destiny">
-          Para {{ carta.destinatario }} ({{ carta.destino }})
-        </p>
-        <p class="card-text">
-          {{ carta.texto }}
-        </p>
+        <div class="row">
+          <div class="col-8">
+            <h5 class="card-title">{{ carta.nombre }} {{ carta.apellido }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ carta.decanato }}</h6>
+            <p class="card-destiny">
+              Para {{ carta.destinatario }} ({{ carta.destino }})
+            </p>
+            <!-- <p class="card-text">
+              {{ carta.texto }}
+            </p> -->
+          </div>
+          <div class="col-4">
+            <button
+              class="button-open"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              @click="getOneCarta(carta.id)"
+              @mouseover="carta.isHovered = true"
+              @mouseleave="carta.isHovered = false"
+            >
+              <i
+                :class="carta.isHovered ? 'hidden' : 'visible'"
+                class="bi bi-envelope-heart"
+              ></i>
+              <i
+                :class="carta.isHovered ? 'visible' : 'hidden'"
+                class="bi bi-envelope-open-heart"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    tabindex="-1"
+    id="exampleModal"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Carta</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" v-for="ucarta in oneCarta" :key="ucarta.id">
+          <p>
+            De:
+            <span class="card-title">
+              {{ ucarta.nombre }} {{ ucarta.apellido }} ({{
+                ucarta.decanato
+              }})</span
+            >
+          </p>
+          <p>
+            Para:
+            <span class="card-title">
+              {{ ucarta.destinatario }} ({{ ucarta.destino }})</span
+            >
+          </p>
+          <hr class="line-separator" />
+          <p>{{ ucarta.texto }}</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -93,9 +173,45 @@ onMounted(() => {
 .card .card-destiny {
   margin: 0;
   font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .card-title {
   font-weight: 600;
+}
+
+.button-open {
+  background: #fe2752;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-open i {
+  font-size: 60px;
+  color: #fff;
+  position: absolute;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.button-open i.hidden {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.button-open i.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.line-separator {
+  color: var(--bs-primary);
 }
 </style>
