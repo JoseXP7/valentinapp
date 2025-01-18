@@ -35,7 +35,7 @@ copyright = year
           <span>Todos los derechos reservados</span>
         </div>
         <div class="credits">
-          Hecho por <a href="https://bootstrapmade.com/">José Graterol</a>
+          Hecho por <a href="https://github.com/JoseXP7">José Graterol</a>
         </div>
       </div>
     </div>

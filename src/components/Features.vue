@@ -3,7 +3,7 @@
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
       <h2>Version 3.0</h2>
-      <p>Lo mas nuevo para ti</p>
+      <p>Lo más nuevo para ti</p>
     </div>
     <!-- End Section Title -->
 

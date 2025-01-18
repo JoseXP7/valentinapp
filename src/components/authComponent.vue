@@ -14,7 +14,11 @@ const handleLogin = async () => {
     loading.value = true
     await login({ email: email.value, password: password.value })
   } catch (error) {
-    alert(error.message)
+    Swal.fire({
+      title: 'Oops...',
+      text: error.message,
+      icon: 'error',
+    })
   } finally {
     loading.value = 'false'
   }
@@ -33,7 +37,11 @@ async function login() {
       icon: 'success',
     })
   } catch (error) {
-    alert(error.message)
+    Swal.fire({
+      title: 'Oops...',
+      text: error.message,
+      icon: 'error',
+    })
   } finally {
     loading.value = false
   }

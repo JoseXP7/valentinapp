@@ -142,5 +142,6 @@ function collapse() {
 
 a.navbar-brand {
   color: #454545;
+  font-weight: bold;
 }
 </style>
