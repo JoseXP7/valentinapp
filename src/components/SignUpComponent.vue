@@ -1,6 +1,7 @@
 <script setup>
 import { useAuth } from '@/composables/useAuth'
 import { ref } from 'vue'
+import Swal from 'sweetalert2'
 
 const loading = ref(false)
 const email = ref('')
@@ -12,7 +13,11 @@ const signup = async () => {
     loading.value = true
     await signUpWithPassw({ email: email.value, password: password.value })
   } catch (error) {
-    alert(error.message)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.message,
+    })
   } finally {
     loading.value = false
   }
@@ -70,8 +75,8 @@ const signup = async () => {
             </button>
 
             <p>
-              <i class="bi bi-info-circle-fill"></i> App en periodo de pruebas,
-              tus datos seran eliminados en 24 horas. Att: José
+              <i class="bi bi-info-circle-fill"></i> Tus datos serán eliminados
+              al finalizar la actividad. Att: José
             </p>
           </div>
         </form>
