@@ -110,7 +110,7 @@ async function signOut() {
 
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-5 col-sm-12 mb-3">
+    <div class="col-md-5 col-sm-12 mb-3 p-3">
       <div class="border-bottom border-primary">
         <h3><i class="bi bi-person-fill"></i> Mi Perfil</h3>
       </div>

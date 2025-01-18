@@ -3,6 +3,7 @@ import Preloader from './Preloader.vue'
 import { ref, onMounted } from 'vue'
 import { useSupabase } from '../clients/supabase'
 import { useAuth } from '@/composables/useAuth.js'
+import Swal from 'sweetalert2'
 const { supabase } = useSupabase()
 const { getUserRole } = useAuth()
 const cartas = ref([])
@@ -20,6 +21,40 @@ const checkUserRole = async () => {
   } catch (error) {
     console.log('Desautorizado para eliminar')
   }
+}
+
+const deleteCard = async (id) => {
+  try {
+    const { error } = await supabase.from('cartas').delete().eq('id', id)
+    if (error) throw error
+    Swal.fire({
+      icon: 'success',
+      title: 'Carta eliminada',
+      text: 'La carta ha sido eliminada correctamente',
+    })
+    getCartas()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const questionDelete = async (id) => {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'No podrás revertir esta acción',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#34d499',
+    cancelButtonColor: '#79113a',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteCard(id)
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire('La carta no ha sido eliminada', '', 'info')
+    }
+  })
 }
 
 async function getCartas() {
@@ -110,9 +145,6 @@ onMounted(() => {
             <p class="card-destiny">
               Para {{ carta.destinatario }} ({{ carta.destino }})
             </p>
-            <!-- <p class="card-text">
-              {{ carta.texto }}
-            </p> -->
           </div>
           <div class="col-4">
             <button
@@ -176,15 +208,18 @@ onMounted(() => {
           </p>
           <hr class="line-separator" />
           <p>{{ ucarta.texto }}</p>
-        </div>
-        <div class="modal-footer">
+
           <button
             v-if="userRole == 'admin'"
             type="button"
             class="btn btn-primary"
+            @click="questionDelete(ucarta.id)"
+            data-bs-dismiss="modal"
           >
             <i class="bi bi-trash"></i> Eliminar
           </button>
+        </div>
+        <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
