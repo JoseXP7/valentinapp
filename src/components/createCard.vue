@@ -10,6 +10,7 @@ const { user } = toRefs(props)
 const username = ref()
 const surname = ref()
 const decanato = ref()
+const role = ref()
 const texto = ref()
 const destinatario = ref()
 const destino = ref()
@@ -27,7 +28,7 @@ const getProfile = async () => {
     loading.value = true
     const { data, error } = await supabase
       .from('profiles')
-      .select(`username, surname, decanato`)
+      .select(`username, surname, decanato, role`)
       .eq('id', user.value.id)
       .single()
 
@@ -37,6 +38,7 @@ const getProfile = async () => {
       username.value = data.username
       surname.value = data.surname
       decanato.value = data.decanato
+      role.value = data.role
     }
   } catch (error) {
     alert(error.message)
@@ -84,6 +86,7 @@ const sendCard = async () => {
         id_user: user.value.id,
         destino: destino.value,
         destinatario: destinatario.value,
+        rol: role.value,
       }
 
       const { error } = await supabase.from('cartas').upsert(send)

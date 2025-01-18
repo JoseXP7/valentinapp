@@ -15,7 +15,6 @@ export function useAuth() {
     if (data.session && data.session.user) {
       setUser(data.session.user)
     }
-
     return data.session
   }
 
@@ -41,9 +40,21 @@ export function useAuth() {
     router.push('/')
   }
 
+  const getUserRole = async () => {
+    const session = await getSession()
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single()
+    if (error) throw error
+    return data.role
+  }
+
   return {
     getSession,
     signUpWithPassw,
     loginWithPassw,
+    getUserRole,
   }
 }

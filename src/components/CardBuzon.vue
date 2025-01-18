@@ -2,13 +2,25 @@
 import Preloader from './Preloader.vue'
 import { ref, onMounted } from 'vue'
 import { useSupabase } from '../clients/supabase'
+import { useAuth } from '@/composables/useAuth.js'
 const { supabase } = useSupabase()
+const { getUserRole } = useAuth()
 const cartas = ref([])
 const searchName = ref('')
 let loading = true
 let isHovered = ref(false)
+const userRole = ref('')
 
 const oneCarta = ref([])
+
+const checkUserRole = async () => {
+  try {
+    const role = await getUserRole()
+    userRole.value = role
+  } catch (error) {
+    console.log('Desautorizado para eliminar')
+  }
+}
 
 async function getCartas() {
   const { data } = await supabase
@@ -45,6 +57,7 @@ function cleanSearch() {
 
 onMounted(() => {
   getCartas()
+  checkUserRole()
   loading = false
 })
 </script>
@@ -86,7 +99,13 @@ onMounted(() => {
       <div class="card-body">
         <div class="row">
           <div class="col-8">
-            <h5 class="card-title">{{ carta.nombre }} {{ carta.apellido }}</h5>
+            <h5 class="card-title">
+              {{ carta.nombre }} {{ carta.apellido }}
+              <i
+                v-if="carta.rol == 'admin'"
+                class="badge-role bi bi-patch-check-fill"
+              ></i>
+            </h5>
             <h6 class="card-subtitle mb-2 text-muted">{{ carta.decanato }}</h6>
             <p class="card-destiny">
               Para {{ carta.destinatario }} ({{ carta.destino }})
@@ -141,9 +160,12 @@ onMounted(() => {
           <p>
             De:
             <span class="card-title">
-              {{ ucarta.nombre }} {{ ucarta.apellido }} ({{
-                ucarta.decanato
-              }})</span
+              {{ ucarta.nombre }} {{ ucarta.apellido }}
+              <i
+                v-if="ucarta.rol == 'admin'"
+                class="badge-role bi bi-patch-check-fill"
+              ></i>
+              ({{ ucarta.decanato }})</span
             >
           </p>
           <p>
@@ -156,6 +178,13 @@ onMounted(() => {
           <p>{{ ucarta.texto }}</p>
         </div>
         <div class="modal-footer">
+          <button
+            v-if="userRole == 'admin'"
+            type="button"
+            class="btn btn-primary"
+          >
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
           <button
             type="button"
             class="btn btn-secondary"
@@ -212,6 +241,10 @@ onMounted(() => {
 }
 
 .line-separator {
+  color: var(--bs-primary);
+}
+
+.badge-role {
   color: var(--bs-primary);
 }
 </style>
