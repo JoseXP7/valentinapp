@@ -33,7 +33,13 @@ function collapse() {
   <header class="header fixed-top">
     <nav class="navbar navbar-expand-lg navbar-light" id="neubar">
       <div class="container">
-        <RouterLink to="/" class="navbar-brand">ValentinApp</RouterLink>
+        <RouterLink to="/" class="navbar-brand">
+          <img
+            src="../assets/img/logo_horizontal.png"
+            alt="Logo Valentin App"
+            width="100"
+          />
+        </RouterLink>
         <button
           class="navbar-toggler"
           type="button"
