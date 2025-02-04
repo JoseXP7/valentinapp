@@ -6,20 +6,29 @@ import Swal from 'sweetalert2'
 const loading = ref(false)
 const email = ref('')
 const password = ref('')
+let emailregEx = /[^@ \t\r\n]{8,}@gmail\.com/g
 const { signUpWithPassw } = useAuth()
 
 const signup = async () => {
-  try {
-    loading.value = true
-    await signUpWithPassw({ email: email.value, password: password.value })
-  } catch (error) {
+  if (emailregEx.test(email.value) == false) {
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: error.message,
+      text: 'Debes usar un correo Gmail válido',
     })
-  } finally {
-    loading.value = false
+  } else {
+    try {
+      loading.value = true
+      await signUpWithPassw({ email: email.value, password: password.value })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      })
+    } finally {
+      loading.value = false
+    }
   }
 }
 </script>
@@ -41,7 +50,7 @@ const signup = async () => {
           Ya tienes una cuenta?
           <RouterLink to="/auth" class="link-primary">Inicia sesión</RouterLink>
         </p>
-        <form>
+        <form @submit.prevent="signup()">
           <div class="form-group mb-3">
             <label for="correo">Correo</label>
             <input
@@ -76,7 +85,9 @@ const signup = async () => {
 
             <p>
               <i class="bi bi-info-circle-fill"></i> Tus datos serán eliminados
-              al finalizar la actividad. Att: José
+              al finalizar la actividad. Att:
+              <span class="spandd">Delta DCyT</span> y
+              <span class="spance">CEDCYT</span>.
             </p>
           </div>
         </form>
@@ -100,6 +111,16 @@ const signup = async () => {
 
 .main {
   padding: 0px 10px;
+}
+
+.spandd {
+  color: #fc4b08;
+  font-weight: bold;
+}
+
+.spance {
+  color: #4a30f2;
+  font-weight: bold;
 }
 
 @media screen and (max-height: 450px) {
