@@ -175,6 +175,15 @@ const handleIncognito = () => {
               <option value="Ingeniería Civil">Ingeniería Civil</option>
               <option value="Urbanismo">Urbanismo</option>
             </optgroup>
+            <optgroup label="DAG">
+              <option value="Ingeniería Agronómica">
+                Ingeniería Agronómica
+              </option>
+              <option value="Ingeniería Agroindustrial">
+                Ingeniería Agroindustrial
+              </option>
+              <option value="T.S.U Agroindustrial">T.S.U Agroindustrial</option>
+            </optgroup>
             <optgroup label="DCS">
               <option value="Enfermería">Enfermeria</option>
               <option value="Medicina">Medicina</option>
