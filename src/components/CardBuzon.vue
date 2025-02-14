@@ -88,12 +88,15 @@ async function searchCarta() {
     getCartas()
     loading = false
   } else {
-    const wordOne = searchName.value.trim().split(' ').at(0)
-    const wordTwo = searchName.value.trim().split(' ').at(1)
+    const wordOne = searchName.value
+    // const wordOne = searchName.value.trim().split(' ').at(0)
+    // const wordTwo = searchName.value.trim().split(' ').at(1)
     const { data } = await supabase
       .from('cartas')
       .select()
-      .or(`nombre.ilike.%${wordOne}%, apellido.ilike.%${wordTwo}%`)
+      .or(`destinatario.ilike.%${wordOne}%`)
+
+    // .or(`nombre.ilike.%${wordOne}%, apellido.ilike.%${wordTwo}%`)
 
     cartas.value = data
     loading = false
@@ -120,6 +123,7 @@ onMounted(() => {
 
   <div class="row mb-3">
     <div class="col-lg-6 col-md-6 col-sm-12">
+      <p>Ingresa tu nombre, quizás alguien te envio una carta... ❤️‍</p>
       <div class="d-flex border-bottom border-primary pb-3">
         <input
           type="text"
