@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 const { supabase } = useSupabase()
 const { getUserRole } = useAuth()
 const cartas = ref([])
+const decanato = ref('todos')
 const searchName = ref('')
 let loading = true
 let isHovered = ref(false)
@@ -58,11 +59,22 @@ const questionDelete = async (id) => {
 }
 
 async function getCartas() {
+  loading = true
   const { data } = await supabase
     .from('cartas')
     .select()
     .order('id', { ascending: false })
-  cartas.value = data.map((carta) => ({ ...carta, isHovered: false }))
+  // cartas.value = data.map((carta) => ({ ...carta, isHovered: false }))
+
+  if (decanato.value == 'todos') {
+    cartas.value = data.map((carta) => ({ ...carta, isHovered: false }))
+    loading = false
+  } else {
+    cartas.value = data
+      .filter((carta) => carta.decanato === decanato.value)
+      .map((carta) => ({ ...carta, isHovered: false }))
+    loading = false
+  }
 }
 
 async function getOneCarta(id) {
@@ -71,8 +83,10 @@ async function getOneCarta(id) {
 }
 
 async function searchCarta() {
+  loading = true
   if (typeof searchName.value === 'string' && searchName.value.length === 0) {
     getCartas()
+    loading = false
   } else {
     const wordOne = searchName.value.trim().split(' ').at(0)
     const wordTwo = searchName.value.trim().split(' ').at(1)
@@ -82,12 +96,14 @@ async function searchCarta() {
       .or(`nombre.ilike.%${wordOne}%, apellido.ilike.%${wordTwo}%`)
 
     cartas.value = data
+    loading = false
   }
 }
 
 function cleanSearch() {
   searchName.value = ''
   getCartas()
+  loading = false
 }
 
 onMounted(() => {
@@ -103,7 +119,7 @@ onMounted(() => {
   </div>
 
   <div class="row mb-3">
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-6 col-sm-12">
       <div class="d-flex border-bottom border-primary pb-3">
         <input
           type="text"
@@ -112,8 +128,29 @@ onMounted(() => {
           v-model="searchName"
         />
 
-        <button class="btn btn-primary ms-2" @click="searchCarta">
-          <i class="bi bi-search"></i>
+        <select
+          name="decanato"
+          id="decanato"
+          v-model="decanato"
+          class="form-select ms-2"
+        >
+          <option value="todos">Mostrar todas</option>
+          <option value="DCYT">DCyT</option>
+          <option value="DIC">DIC</option>
+          <option value="DAG">DAG</option>
+          <option value="DCV">DCV</option>
+          <option value="DCEE">DCEE</option>
+          <option value="DEHA">DEHA</option>
+          <option value="DCS">DCS</option>
+        </select>
+
+        <button
+          class="btn btn-primary ms-2"
+          @click="searchCarta"
+          :disabled="loading"
+        >
+          <i v-if="loading" class="bi bi-arrow-clockwise"></i>
+          <i v-else class="bi bi-search"></i>
         </button>
 
         <button class="btn btn-secondary ms-2" @click="cleanSearch">

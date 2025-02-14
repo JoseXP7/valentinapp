@@ -288,38 +288,36 @@ const questionDelete = async (id) => {
         <i class="bi bi-arrow-clockwise"></i> Cargar datos
       </button>
 
-      <div class="mt-3">
-        <h4>Usuarios</h4>
-        <table class="table table-primary table-striped table-responsive">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Decanato</th>
-              <th>Rol</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in users" :key="user.id">
-              <td>{{ user.username }}</td>
-              <td>{{ user.surname }}</td>
-              <td>{{ user.decanato }}</td>
-              <td>{{ user.role }}</td>
-              <td>
-                <button
-                  class="btn btn-secondary m-1"
-                  @click="getOneUser(user.id)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                >
-                  <i class="bi bi-eye"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h4 class="mt-2">Usuarios</h4>
+      <table class="table table-primary table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Decanato</th>
+            <th>Rol</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.username }}</td>
+            <td>{{ user.surname }}</td>
+            <td>{{ user.decanato }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <button
+                class="btn btn-secondary m-1"
+                @click="getOneUser(user.id)"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

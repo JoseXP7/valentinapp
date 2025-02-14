@@ -22,6 +22,7 @@
   -ms-transform: translate(-100%, -240%);
   -webkit-transform: translate(-100%, -240%);
   -moz-transform: translate(-100%, -240%);
+  z-index: 1000;
 }
 
 .cssload-main * {

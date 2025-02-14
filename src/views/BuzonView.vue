@@ -15,15 +15,15 @@ import CardBuzon from '../components/CardBuzon.vue'
       </h2>
     </div>
     <section class="row justify-content-center">
-      <h2 class="display-2">¿Buscando alguna carta?</h2>
+      <!-- <h2 class="display-2">¿Buscando alguna carta?</h2>
       <h3>
         Tal vez debas esperar al <span class="text-primary">14</span> de
         Febrero...
         <span class="text-primary">¡Pero puedes enviar alguna!</span>
-      </h3>
-      <!-- <CardBuzon /> -->
+      </h3> -->
+      <CardBuzon />
     </section>
-    <section class="d-flex justify-content-center">
+    <!-- <section class="d-flex justify-content-center">
       <div class="mt-5">
         <img
           src="../assets/img/logo_vertical.png"
@@ -32,7 +32,7 @@ import CardBuzon from '../components/CardBuzon.vue'
           width="300"
         />
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
