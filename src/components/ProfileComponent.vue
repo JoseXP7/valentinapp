@@ -56,7 +56,7 @@ const getProfile = async () => {
       Swal.fire({
         icon: 'info',
         title: 'Completa tu Perfil',
-        text: 'Completa tu perfil para poder enviar cartas',
+        text: 'Completa tu perfil para poder enviar cartas, recuerda ingresar tu nombre, apellido y decanato al que perteneces',
       })
     }
   }
